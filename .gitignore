@@ -1,0 +1,16 @@
+.gradle/
+**/build/
+
+.idea/
+*.iml
+
+.env
+.env.*
+!.env.example
+
+application-local.properties
+application-secret.properties
+
+*.log
+
+.DS_Store
