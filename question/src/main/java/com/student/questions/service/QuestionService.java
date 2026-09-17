@@ -20,8 +20,8 @@ public class QuestionService {
     public List<Question> getQuestionsByCategory(String category){
         return questionRepository.findByCategory(category);
     }
-    public List<Question> getRandomQuestionsByCategory(String category, int count) {
-        return questionRepository.findRandomQuestionsByCategory(category, count);
+    public List<Question> getRandomQuestionsByCategory(String category) {
+        return questionRepository.findRandomQuestionsByCategory(category, 10);
     }
 
 }

@@ -25,10 +25,9 @@ public class QuestionController {
 
     @GetMapping("/category/{category}/random")
     public List<Question> getRandomQuestions(
-            @PathVariable String category,
-            @RequestParam int count) {
+            @PathVariable String category) {
 
-        return questionService.getRandomQuestionsByCategory(category, count);
+        return questionService.getRandomQuestionsByCategory(category);
     }
 
 }
