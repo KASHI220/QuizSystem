@@ -1,16 +1,50 @@
+<<<<<<< HEAD
 .gradle/
 **/build/
 
 .idea/
 *.iml
 
+=======
+# Gradle
+.gradle/
+**/build/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Environment / secrets
+>>>>>>> quizSystem2
 .env
 .env.*
 !.env.example
 
+<<<<<<< HEAD
 application-local.properties
 application-secret.properties
 
 *.log
 
 .DS_Store
+=======
+# Local Spring configuration
+application-local.properties
+application-secret.properties
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+
+# Temporary files
+*.tmp
+*.temp
+>>>>>>> quizSystem2
