@@ -6,6 +6,8 @@ import com.student.quiz.model.QuizResponse;
 import com.student.quiz.model.StartQuizRequest;
 import com.student.quiz.model.SubmitQuizRequest;
 import com.student.quiz.service.QuizService;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,19 +20,59 @@ public class QuizController {
         this.quizService = quizService;
     }
 
+
     @PostMapping("/start")
-    public QuizResponse startQuiz(@RequestBody StartQuizRequest request) {
+    public QuizResponse startQuiz(
+            @RequestBody StartQuizRequest request,
+            Authentication authentication) {
 
-        Quiz quiz = quizService.startQuiz(request);
+        Long studentId =
+                Long.parseLong(
+                        authentication.getName()
+                );
 
-        return quizService.getQuizResponse(quiz);
+        Quiz quiz =
+                quizService.startQuiz(
+                        studentId,
+                        request
+                );
+
+        return quizService.getQuizResponse(
+                quiz
+        );
     }
+
 
     @PostMapping("/{quizId}/submit")
     public QuizResult submitQuiz(
             @PathVariable String quizId,
             @RequestBody SubmitQuizRequest request) {
 
-        return quizService.submitQuiz(quizId, request);
+        return quizService.submitQuiz(
+                quizId,
+                request
+        );
+    }
+
+
+    @PostMapping("/retry/{quizId}")
+    public QuizResponse retryQuiz(
+            @PathVariable String quizId,
+            Authentication authentication) {
+
+        Long studentId =
+                Long.parseLong(
+                        authentication.getName()
+                );
+
+        Quiz quiz =
+                quizService.retryQuiz(
+                        quizId,
+                        studentId
+                );
+
+        return quizService.getQuizResponse(
+                quiz
+        );
     }
 }
