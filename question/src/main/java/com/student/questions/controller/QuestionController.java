@@ -11,23 +11,23 @@ import java.util.List;
 public class QuestionController {
 
     final private QuestionService questionService;
-    public QuestionController(QuestionService questionService){
+
+    public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
+
     @GetMapping
-    public List<Question> questionList(){
+    public List<Question> questionList() {
         return questionService.getQuestions();
     }
+
     @GetMapping("/category/{category}")
-    public List<Question> getCategoryQuestions(@PathVariable String category){
+    public List<Question> getCategoryQuestions(@PathVariable String category) {
         return questionService.getQuestionsByCategory(category);
     }
 
     @GetMapping("/category/{category}/random")
-    public List<Question> getRandomQuestions(
-            @PathVariable String category) {
-
+    public List<Question> getRandomQuestions(@PathVariable String category) {
         return questionService.getRandomQuestionsByCategory(category);
     }
-
 }

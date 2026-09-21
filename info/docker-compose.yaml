@@ -1,0 +1,54 @@
+services:
+
+  info-db:
+    image: postgres:18
+    container_name: quiz-info-db
+
+    environment:
+      POSTGRES_DB: QuizUsers
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - info-db-data:/var/lib/postgresql
+
+    networks:
+      - quiz-network
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d QuizUsers"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  info:
+    image: quiz-info:latest
+    container_name: quiz-info
+
+    ports:
+      - "8081:8081"
+
+    environment:
+      DB_URL: jdbc:postgresql://info-db:5432/QuizUsers
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+    depends_on:
+      info-db:
+        condition: service_healthy
+
+    networks:
+      - quiz-network
+
+
+volumes:
+  info-db-data:
+
+
+networks:
+  quiz-network:
+    driver: bridge

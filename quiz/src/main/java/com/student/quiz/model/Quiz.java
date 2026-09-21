@@ -8,6 +8,10 @@ public class Quiz {
     private Long studentId;
     private String category;
     private List<QuizQuestion> questions;
+    private int attemptNumber;
+
+    private boolean completed;
+    private boolean passed;
 
     public Quiz() {
     }
@@ -42,5 +46,29 @@ public class Quiz {
 
     public void setQuestions(List<QuizQuestion> questions) {
         this.questions = questions;
+    }
+
+    public int getAttemptNumber() {
+        return attemptNumber;
+    }
+
+    public void setAttemptNumber(int attemptNumber) {
+        this.attemptNumber = attemptNumber;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public boolean isPassed() {
+        return passed;
+    }
+
+    public void setPassed(boolean passed) {
+        this.passed = passed;
     }
 }

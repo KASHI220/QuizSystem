@@ -8,6 +8,9 @@ public class QuizResult {
     private int wrongAnswers;
     private int score;
     private boolean passed;
+    private int attemptNumber;
+    private boolean retryAllowed;
+
 
     public QuizResult() {
     }
@@ -46,6 +49,22 @@ public class QuizResult {
 
     public int getScore() {
         return score;
+    }
+
+    public int getAttemptNumber() {
+        return attemptNumber;
+    }
+
+    public void setAttemptNumber(int attemptNumber) {
+        this.attemptNumber = attemptNumber;
+    }
+
+    public boolean isRetryAllowed() {
+        return retryAllowed;
+    }
+
+    public void setRetryAllowed(boolean retryAllowed) {
+        this.retryAllowed = retryAllowed;
     }
 
     public void setScore(int score) {
