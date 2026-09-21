@@ -1,0 +1,42 @@
+services:
+
+  history-db:
+    image: postgres:18
+    container_name: quiz-history-db
+    environment:
+      POSTGRES_DB: QuizHistory
+      POSTGRES_USER: ${HISTORY_DB_USERNAME}
+      POSTGRES_PASSWORD: ${HISTORY_DB_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - history-db-data:/var/lib/postgresql
+    networks:
+      - quiz-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${HISTORY_DB_USERNAME} -d QuizHistory"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  history:
+    image: quiz-history:latest
+    container_name: quiz-history
+    ports:
+      - "8084:8084"
+    environment:
+      HISTORY_DB_URL: jdbc:postgresql://history-db:5432/QuizHistory
+      HISTORY_DB_USERNAME: ${HISTORY_DB_USERNAME}
+      HISTORY_DB_PASSWORD: ${HISTORY_DB_PASSWORD}
+    depends_on:
+      history-db:
+        condition: service_healthy
+    networks:
+      - quiz-network
+
+volumes:
+  history-db-data:
+
+networks:
+  quiz-network:
+    driver: bridge
