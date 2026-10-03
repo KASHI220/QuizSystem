@@ -1,5 +1,9 @@
-FROM openjdk:28-ea-oraclelinux10
+FROM eclipse-temurin:21-jre
 
-COPY build/libs/quiz-0.0.1-SNAPSHOT.jar quiz-service.jar
+WORKDIR /app
 
-ENTRYPOINT ["java", "-jar", "/quiz-service.jar"]
+COPY build/libs/*.jar app.jar
+
+EXPOSE 8083
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
