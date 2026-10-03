@@ -1,5 +1,9 @@
 FROM eclipse-temurin:21-jre
 
-COPY build/libs/questions-0.0.1-SNAPSHOT.jar question-service.jar
+WORKDIR /app
 
-ENTRYPOINT ["java", "-jar", "/question-service.jar"]
+COPY build/libs/*.jar app.jar
+
+EXPOSE 8082
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
