@@ -1,5 +1,9 @@
-FROM openjdk:28-ea-oraclelinux10
+FROM eclipse-temurin:21-jre
 
-COPY build/libs/gateway-0.0.1-SNAPSHOT.jar gateway-service.jar
+WORKDIR /app
 
-ENTRYPOINT ["java", "-jar", "/gateway-service.jar"]
+COPY build/libs/*.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
