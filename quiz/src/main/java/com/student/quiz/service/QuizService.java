@@ -1,16 +1,16 @@
 package com.student.quiz.service;
 
-import com.student.quiz.client.HistoryClient;
 import com.student.quiz.client.QuestionClient;
 import com.student.quiz.dto.QuizResult;
+import com.student.quiz.model.QuizCompletedEvent;
 import com.student.quiz.model.AnswerRequest;
-import com.student.quiz.model.HistoryRequest;
 import com.student.quiz.model.Quiz;
 import com.student.quiz.model.QuizQuestion;
 import com.student.quiz.model.QuizQuestionResponse;
 import com.student.quiz.model.QuizResponse;
 import com.student.quiz.model.StartQuizRequest;
 import com.student.quiz.model.SubmitQuizRequest;
+import com.student.quiz.service.QuizEventProducer;
 
 import org.springframework.stereotype.Service;
 
@@ -23,16 +23,16 @@ import java.util.UUID;
 public class QuizService {
 
     private final QuestionClient questionClient;
-    private final HistoryClient historyClient;
+    private final QuizEventProducer quizEventProducer;
 
     private final Map<String, Quiz> quizStore = new HashMap<>();
 
     public QuizService(
             QuestionClient questionClient,
-            HistoryClient historyClient) {
+            QuizEventProducer quizEventProducer) {
 
         this.questionClient = questionClient;
-        this.historyClient = historyClient;
+        this.quizEventProducer = quizEventProducer;
     }
 
     // =========================
@@ -165,49 +165,22 @@ public class QuizService {
 
 
         // =========================
-        // SAVE HISTORY
+        // CREATE KAFKA EVENT
         // =========================
 
-        HistoryRequest history =
-                new HistoryRequest();
+        QuizCompletedEvent event =
+                new QuizCompletedEvent(
+                        quiz.getStudentId(),
+                        quiz.getQuizId(),
+                        quiz.getCategory(),
+                        correct,
+                        total,
+                        passed,
+                        quiz.getAttemptNumber()
+                );
 
-        history.setStudentId(
-                quiz.getStudentId()
-        );
-
-        history.setQuizId(
-                quiz.getQuizId()
-        );
-
-        history.setCategory(
-                quiz.getCategory()
-        );
-
-        history.setTotalQuestions(
-                total
-        );
-
-        history.setCorrectAnswers(
-                correct
-        );
-
-        history.setWrongAnswers(
-                wrong
-        );
-
-        history.setScore(
-                correct
-        );
-
-        history.setPassed(
-                passed
-        );
-
-        history.setAttemptNumber(
-                quiz.getAttemptNumber()
-        );
-
-        historyClient.saveHistory(history);
+        // Send event to Kafka
+        quizEventProducer.publishQuizCompleted(event);
 
         return result;
     }
