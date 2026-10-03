@@ -39,4 +39,4 @@ volumes:
 
 networks:
   quiz-network:
-    driver: bridge
+    external: true
