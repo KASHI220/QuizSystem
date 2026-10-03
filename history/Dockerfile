@@ -1,5 +1,9 @@
-FROM openjdk:28-ea-oraclelinux10
+FROM eclipse-temurin:21-jre
 
-COPY build/libs/history-0.0.1-SNAPSHOT.jar history-service.jar
+WORKDIR /app
 
-ENTRYPOINT ["java", "-jar", "/history-service.jar"]
+COPY build/libs/*.jar app.jar
+
+EXPOSE 8084
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
